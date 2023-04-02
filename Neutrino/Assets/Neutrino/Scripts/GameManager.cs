@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager _instance;
+    public AudioSource _audioSource;
     public float score = 0;
     private float _timer;
     public float _speed = 4;
@@ -45,6 +46,11 @@ public class GameManager : MonoBehaviour
         {
             _isGameOver = true;
         }
+        if (_isGameOver)
+        {
+            stateMachine.instance.SetState(State.SCORE);
+        }
+        Debug.Log(_life);
     }
 
     public void SwapPause()
