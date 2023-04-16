@@ -27,6 +27,8 @@ public class Element : MonoBehaviour
     private List<Material> _mat = new List<Material>();
     [SerializeField]
     private List<LineRenderer> _lines = new List<LineRenderer>();
+    [SerializeField]
+    private List<GameObject> _detectorSlices = new List<GameObject>();
 
     public float radius
     {
@@ -180,11 +182,13 @@ public class Element : MonoBehaviour
                 {
                     if (_index + _indexBuffer >= 12)
                     {
+                        _detectorSlices[_index + _indexBuffer - 12].SetActive(false);
                         _lightCone[_index + _indexBuffer - 12][j].GetComponent<Renderer>().material.SetColor("_EmissionColor", Color.white);
                         _lightCone[_index + _indexBuffer - 12][j].GetComponent<SphereCollider>().enabled = false;
                     }
                     else
                     {
+                        _detectorSlices[_index + _indexBuffer].SetActive(false);
                         _lightCone[_index + _indexBuffer][j].GetComponent<Renderer>().material.SetColor("_EmissionColor", Color.white);
                         _lightCone[_index + _indexBuffer][j].GetComponent<SphereCollider>().enabled = false;
                     }
@@ -206,12 +210,14 @@ public class Element : MonoBehaviour
                 {
                     if (_index + _indexBuffer >= 12)
                     {
+                        _detectorSlices[_index + _indexBuffer - 12].SetActive(true);
                         _lightCone[_index + _indexBuffer - 12][j].GetComponent<Renderer>().material.SetColor("_EmissionColor", Color.red * 7f);
                         _lightCone[_index + _indexBuffer - 12][j].GetComponent<SphereCollider>().enabled = true;
 
                     }
                     else
                     {
+                        _detectorSlices[_index + _indexBuffer].SetActive(true);
                         _lightCone[_index + _indexBuffer][j].GetComponent<Renderer>().material.SetColor("_EmissionColor", Color.red * 7f);
                         _lightCone[_index + _indexBuffer][j].GetComponent<SphereCollider>().enabled = true;
                     }
@@ -224,6 +230,7 @@ public class Element : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
+            _detectorSlices[_index].SetActive(false);
             Sound._instance._audioSource.PlayOneShot(Sound._instance._audioClip[2], 0.55f);
             foreach (var obj in _lightCone[_index])
             {
@@ -238,17 +245,20 @@ public class Element : MonoBehaviour
             {
                 _index++;
             }
+            _detectorSlices[_index].SetActive(true);
             for (int i = 0; i < _indexBuffer+1; i++)
             {
                 for(int j = 0; j < _lightCone[0].Count;j++)
                 {
                     if (_index + i >= 12)
                     {
+                        _detectorSlices[_index + i - 12].SetActive(true);
                         _lightCone[_index + i - 12][j].GetComponent<Renderer>().material.SetColor("_EmissionColor", Color.red * 7f);
                         _lightCone[_index + i - 12][j].GetComponent<SphereCollider>().enabled = true;
                     }
                     else
                     {
+                        _detectorSlices[_index + i].SetActive(true);
                         _lightCone[_index + i][j].GetComponent<Renderer>().material.SetColor("_EmissionColor", Color.red * 7f);
                         _lightCone[_index + i][j].GetComponent<SphereCollider>().enabled = true;
                     }
@@ -263,16 +273,19 @@ public class Element : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
+            //_detectorSlices[_index].SetActive(false);
             Sound._instance._audioSource.PlayOneShot(Sound._instance._audioClip[2],0.55f);
             for (int i = 0; i < _lightCone[0].Count; i++)
             {
                 if(_index + _indexBuffer >= 12)
                 {
+                    _detectorSlices[_index + _indexBuffer - 12].SetActive(false);
                     _lightCone[_index + _indexBuffer - 12][i].GetComponent<Renderer>().material.SetColor("_EmissionColor", Color.white);
                     _lightCone[_index + _indexBuffer - 12][i].GetComponent<SphereCollider>().enabled = false;
                 }
                 else
                 {
+                    _detectorSlices[_index + _indexBuffer].SetActive(false);
                     _lightCone[_index + _indexBuffer][i].GetComponent<Renderer>().material.SetColor("_EmissionColor", Color.white);
                     _lightCone[_index + _indexBuffer][i].GetComponent<SphereCollider>().enabled = false;
                 }
@@ -286,6 +299,7 @@ public class Element : MonoBehaviour
             {
                 _index--;
             }
+            _detectorSlices[_index].SetActive(true);
             foreach (var obj in _lightCone[_index])
             {
                 obj.GetComponent<Renderer>().material.SetColor("_EmissionColor", Color.red * 7f);

@@ -1,13 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager _instance;
     public AudioSource _audioSource;
+    public TextMeshProUGUI _nbLevel;
+    public TextMeshProUGUI _finalScore;
+    public Slider _slider;
     public float score = 0;
     private float _timer;
     public float _speed = 4;
@@ -31,9 +36,11 @@ public class GameManager : MonoBehaviour
         _timer += Time.deltaTime;
         _scoreTimer += Time.deltaTime;
         _t += Time.deltaTime;
+        _slider.value = _life/10;
         if (_timer > 30)
         {
             _level++;
+            _nbLevel.text = _level.ToString();
             _speed += 0.3f * _speed;
             _timer = 0;
         }
@@ -42,9 +49,10 @@ public class GameManager : MonoBehaviour
             _life -= _level;
             _t = 0;
         }
-        if(_life == 0)
+        if(_life <= 0 && !_isGameOver)
         {
             _isGameOver = true;
+            _finalScore.text = ((int)_scoreTimer).ToString();
         }
         if (_isGameOver)
         {
